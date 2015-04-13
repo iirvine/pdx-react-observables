@@ -22,8 +22,6 @@ export default function(Component) {
     }
 
     runQuery() {
-      console.log('running query');
-
       this.setState({timer: 0});
       
       return this.props.api.query()
@@ -32,9 +30,8 @@ export default function(Component) {
     }
 
     update() {
-      console.log(this.state.timer);
       this.setState({timer: this.state.timer + 1}, () => {
-        if (this.state.timer >= this.props.interval) {
+        if (this.state.timer * 1000 >= this.props.interval) {
           this.runQuery();
         }
       });
@@ -44,20 +41,10 @@ export default function(Component) {
       this.runQuery();
     }
 
-    pause() {
-      clearInterval(this.interval);
-    }
-
-    resume() {
-      this.interval = setInterval(this.update.bind(this), 1000);
-    }
-
     render() {
       return (
         <Component {...this.props} {...this.state} 
-          onUserInput={this.onUserInput.bind(this)}
-          pause={this.pause.bind(this)}
-          resume={this.resume.bind(this)} />
+          onUserInput={this.onUserInput.bind(this)} />
       );
     }
   };
