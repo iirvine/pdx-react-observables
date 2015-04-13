@@ -1,9 +1,9 @@
-import fetch from 'whatwg-fetch';
-
-function url(x, y) {
-  return `http://some-url.com/${x}/${y}`;
+function url(term) {
+  return `http://edgecats.net`;
 }
 
-export function query(x, y) {
-  return fetch(url(x, y));
-}
+export default {
+  query(term) {
+    return fetch(url(term));
+  }
+} 
