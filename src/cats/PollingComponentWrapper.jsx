@@ -1,23 +1,34 @@
 import React from 'react';
-import rx from 'rx';
 
 export default React.createClass({
-  componentWillMount() {
-    this.inputStream = new rx.Subject();
-    
-    this.stream = this.inputStream
-      .flatMapLatest(() => rx.Observable
-          .interval(this.props.interval)
-          .startWith(-1));
+  getInitialState() {
+    return { count: 0, shouldUpdate: false };
   },
 
-  onUserInput() {
-    this.inputStream.onNext();
+  componentWillMount() {
+    this.interval = setInterval(this.update.bind(this), 1000);
+  },
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  },
+
+  update() {
+    let next = this.state.timer + 1;
+    this.setState({
+      timer: next,
+      shouldUpdate: next >= this.props.interval
+    });
+  },
+
+  reset() {
+    this.setState({timer: 0});
   },
 
   render() {
     return React.cloneElement(this.props.children, {
-      stream: this.stream, 
-      onUserInput: this.onUserInput});
+      shouldUpdate: this.state.shouldUpdate,
+      reset: this.reset 
+    });
   }
-});
+})

@@ -7,34 +7,26 @@ export default function(Component) {
       super();
       
       this.state = {
-        data: null,
-        timer: 0
+        data: null
       };
     }
 
     componentDidMount() {
-      this.interval = setInterval(this.update.bind(this), 1000);
       this.runQuery();
     }
 
-    componentWillUnmount() {
-      clearInterval(this.interval);
-    }
-
     runQuery() {
-      this.setState({timer: 0});
+      this.props.reset();
       
       return this.props.api.query()
         .then((response) => response.blob())
         .then((data) => this.setState({data}));
     }
 
-    update() {
-      this.setState({timer: this.state.timer + 1}, () => {
-        if (this.state.timer * 1000 >= this.props.interval) {
-          this.runQuery();
-        }
-      });
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.shouldUpdate && !this.props.shouldUpdate) {
+        this.runQuery();
+      }
     }
 
     onUserInput() {

@@ -12,6 +12,9 @@ export default React.createClass({
           <li>
             <Link to='cat-fancy-observable'>Observable Cat Fancy</Link>
           </li>
+          <li>
+            <Link to="thebutton">The Button</Link>
+          </li>
         </ul>
       </div>
     );

@@ -14,8 +14,8 @@ export default function(Component) {
     componentWillMount() {
       this.subscription = this.props.stream
         .flatMap(this.props.api.query)
-        .flatMap((response) => { return {data: response.blob()}; })
-        .subscribe(this.setState.bind(this));
+        .flatMap((response) => { return response.blob(); })
+        .subscribe((data) => this.setState({data}));
 
       // initiate stream with a programmatic 'user event'
       this.props.onUserInput();

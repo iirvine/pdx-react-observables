@@ -1,27 +1,32 @@
 import React from 'react';
 import CatFancy from './CatFancy';
 import PollingComponentWrapper from './PollingComponentWrapper';
+import ObservablePollingComponentWrapper from './ObservablePollingComponentWrapper';
 
 import api from './api';
+import createApiComponent from './createApiComponent';
 import createObservableApiComponent from './createObservableApiComponent';
-import createPollingApiComponent from './createPollingApiComponent';
 
+const ReactCatFancy = createApiComponent(CatFancy);
 const ObservableCatFancy = createObservableApiComponent(CatFancy);
-const PollingCatFancy = createPollingApiComponent(CatFancy);
 
 export default {
   CatFancy: React.createClass({
     render() {
-      return <PollingCatFancy api={api} interval={10000} />;
+      return (
+        <PollingComponentWrapper interval={10}>
+          <ReactCatFancy api={api} />
+        </PollingComponentWrapper>
+      );
     }
   }),
   
   ObservableCatFancy: React.createClass({
     render() {
       return (
-        <PollingComponentWrapper interval={10000}>
+        <ObservablePollingComponentWrapper interval={10000}>
           <ObservableCatFancy api={api}/>
-        </PollingComponentWrapper>
+        </ObservablePollingComponentWrapper>
       );
     }
   })
