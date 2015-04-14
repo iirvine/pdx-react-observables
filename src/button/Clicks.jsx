@@ -6,10 +6,13 @@ export default React.createClass({
   },
 
   componentWillMount() {
+    // second parameter to bufferWithCount is important - it's how many elements to 
+    // skip between creation of consecutive buffers. the default is the count param 
+    // since we want each tick buffer to overlap to compare them, we have to specify a skip of 1
     this.subscription = this.props.stream
-      .bufferWithCount(2)
-      .filter(([a, b]) => a.secondsLeft > b.secondsLeft)
-      .subscribe(([a, b]) => this.setState({lastClick: b}));
+      .bufferWithCount(2, 1)
+      .filter(([a, b]) => b.secondsLeft >= a.secondsLeft)
+      .subscribe(([a, b]) => this.setState({lastClick: a}));
   },
 
   componentWillUnmount() {
